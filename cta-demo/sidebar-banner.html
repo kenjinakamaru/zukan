@@ -24,22 +24,22 @@
     font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",-apple-system,"Noto Sans JP",sans-serif;}
   .zkside-card *{box-sizing:border-box}
   .zkside-pin{position:absolute;right:-14px;top:-14px;width:96px;height:96px;opacity:.16}
-  .zkside-eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;
+  .zkside-eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px !important;
     font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#FFD24A}
   .zkside-eyebrow .bar{width:16px;height:2px;background:#FFD24A;border-radius:2px}
-  .zkside-title{margin:0 0 10px;font-size:18px;font-weight:800;line-height:1.5;color:#fff;letter-spacing:.01em}
+  .zkside-title{margin:0 0 10px !important;font-size:18px;font-weight:800;line-height:1.5;color:#fff;letter-spacing:.01em}
   .zkside-title .mk{background:linear-gradient(transparent 62%,rgba(255,210,74,.9) 62%);padding:0 2px;font-weight:800;color:#fff}
-  .zkside-lead{margin:0 0 16px;font-size:12px;line-height:1.75;color:rgba(255,255,255,.86)}
-  .zkside-stats{display:flex;gap:14px;margin:0 0 16px;padding:0;list-style:none}
-  .zkside-stats li{font-size:10.5px;line-height:1.35;color:rgba(255,255,255,.78)}
-  .zkside-stats b{display:block;font-size:16px;font-weight:800;color:#FFD24A;letter-spacing:.02em}
+  .zkside-lead{margin:0 0 16px !important;font-size:12px;line-height:1.75;color:rgba(255,255,255,.86)}
+  .zkside-stats{display:flex !important;gap:14px;margin:0 0 18px !important;padding:0 !important;list-style:none}
+  .zkside-stats .zkside-stat{flex:1;margin:0 !important;padding:0 !important;font-size:10.5px;line-height:1.35;color:rgba(255,255,255,.78)}
+  .zkside-stats b{display:block;font-size:16px;font-weight:800;color:#FFD24A;letter-spacing:.02em;margin:0 !important}
   .zkside-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;
     background:linear-gradient(180deg,#F4A62A 0%,#EE9515 100%);color:#fff;
     font-size:15px;font-weight:800;text-decoration:none;padding:13px 16px;border-radius:0;
     box-shadow:0 6px 14px rgba(238,149,21,.4);transition:.2s}
   .zkside-btn:hover{filter:brightness(1.05);transform:translateY(-1px);box-shadow:0 9px 18px rgba(238,149,21,.5)}
   .zkside-btn svg{flex:0 0 auto}
-  .zkside-note{margin:9px 0 0;text-align:center;font-size:10.5px;color:rgba(255,255,255,.72)}
+  .zkside-note{margin:9px 0 0 !important;text-align:center;font-size:10.5px;color:rgba(255,255,255,.72)}
 </style>
 <div class="zkside-card">
   <svg class="zkside-pin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -49,11 +49,11 @@
   <div class="zkside-eyebrow"><span class="bar"></span>転職をお考えの方へ</div>
   <h3 class="zkside-title">広島の企業に<span class="mk">強い</span>、<br>地元発の転職支援。</h3>
   <p class="zkside-lead">経営者の人柄も社風も知る私たちが、あなたに合った一社をご紹介します。</p>
-  <ul class="zkside-stats">
-    <li><b>70年</b>広島企業の<br>取材実績</li>
-    <li><b>非公開</b>求人票にない<br>案件も</li>
-    <li><b>UIJ</b>東京からの<br>ターンも対応</li>
-  </ul>
+  <div class="zkside-stats">
+    <div class="zkside-stat"><b>70年</b>広島企業の<br>取材実績</div>
+    <div class="zkside-stat"><b>非公開</b>求人票にない<br>案件も</div>
+    <div class="zkside-stat"><b>UIJ</b>東京からの<br>ターンも対応</div>
+  </div>
   <a class="zkside-btn" href="https://zukan.biz/tenshoku/">無料で転職相談する
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
