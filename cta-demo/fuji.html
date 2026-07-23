@@ -616,44 +616,64 @@ U R L&#65306;<a href="https://www.the-fuji.com/company/" target="_blank" rel="no
         </div>
     </div><div id="crp_related"> </div>				</div>
 				
-<!-- ===== 追加提案：記事末尾CTA（デモ） ここから ===== -->
+<!-- ===== 追加CTA ここから ===== -->
 <style>
-.ctaDemo-wrap{max-width:840px;margin:48px auto 8px;padding:0 4px;font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,sans-serif;}
-.ctaDemo-flag{display:inline-block;background:#e8f0ff;color:#0B2C7B;font-size:12px;font-weight:700;letter-spacing:.04em;padding:5px 12px;border-radius:4px;margin-bottom:10px;}
-.ctaDemo-flag small{font-weight:500;color:#5b6b8a;}
-.ctaDemo-card{position:relative;background:#0B2C7B;color:#fff;border-radius:14px;padding:34px 36px;box-shadow:0 10px 30px rgba(11,44,123,.18);overflow:hidden;}
-.ctaDemo-card::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,255,255,.10) 0%,transparent 70%);}
-.ctaDemo-eyebrow{font-size:13px;letter-spacing:.08em;color:#aecbff;margin:0 0 10px;font-weight:600;}
-.ctaDemo-h{font-size:24px;line-height:1.5;font-weight:800;margin:0 0 14px;letter-spacing:.01em;}
-.ctaDemo-h .u-accent{color:#ffd24a;}
-.ctaDemo-body{font-size:14.5px;line-height:1.9;color:#e6edff;margin:0 0 22px;max-width:60ch;}
-.ctaDemo-btnrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;}
-.ctaDemo-btn{display:inline-flex;align-items:center;gap:8px;background:#F03020;color:#fff;font-size:16px;font-weight:800;text-decoration:none;padding:15px 30px;border-radius:8px;box-shadow:0 4px 0 #b81f12;transition:transform .08s;}
-.ctaDemo-btn:hover{transform:translateY(1px);box-shadow:0 3px 0 #b81f12;}
-.ctaDemo-btn .arw{font-size:18px;}
-.ctaDemo-note{font-size:13px;color:#c5d4f5;}
-.ctaDemo-tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
-.ctaDemo-tag{font-size:12px;background:rgba(255,255,255,.12);color:#eaf1ff;border-radius:100px;padding:5px 13px;}
-@media(max-width:640px){.ctaDemo-card{padding:26px 20px;}.ctaDemo-h{font-size:20px;}}
+  .hcta-wrap{padding:56px 24px;display:flex;justify-content:center;}
+  .hcta-card{width:800px;height:290px;max-width:100%;box-sizing:border-box;background:linear-gradient(100deg,#2C7AC9 0%,#124487 52%,#071f4d 100%);border-radius:16px;padding:22px 44px;box-shadow:0 14px 36px rgba(11,44,123,.28);font-family:'Noto Sans JP',sans-serif;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+  .hcta-eyebrow{display:inline-flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .hcta-eyebrow span.tick{width:20px;height:2px;background:#FFD24A;border-radius:2px;}
+  .hcta-eyebrow span.txt{font-size:12.5px;font-weight:700;letter-spacing:.1em;color:#FFD24A;}
+  .hcta-title{margin:0 auto 10px;max-width:700px;font-size:24px;font-weight:800;line-height:1.4;letter-spacing:.01em;}
+  .hcta-title .mark{background:linear-gradient(transparent 62%,rgba(255,210,74,.9) 62%);padding:0 3px;}
+  .hcta-lead{margin:0 auto 18px;max-width:620px;font-size:13px;line-height:1.7;color:rgba(255,255,255,.86);text-wrap:pretty;}
+  .hcta-btns{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:16px 20px;}
+  .hcta-col{display:flex;flex-direction:column;align-items:center;gap:7px;}
+  .hcta-micro{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;color:rgba(255,255,255,.82);}
+  .hcta-micro .slash{width:1px;height:13px;background:rgba(255,255,255,.5);}
+  .hcta-micro .slash.l{transform:rotate(-22deg);}
+  .hcta-micro .slash.r{transform:rotate(22deg);}
+  .hcta-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:236px;box-sizing:border-box;font-size:16px;font-weight:700;border-radius:10px;transition:.25s;text-decoration:none;}
+  .hcta-btn-primary{background:linear-gradient(180deg,#F4A62A 0%,#EE9515 100%);color:#fff;padding:15px 26px;box-shadow:0 8px 16px rgba(238,149,21,.4);}
+  .hcta-btn-primary:hover{filter:brightness(1.05);box-shadow:0 11px 22px rgba(238,149,21,.5);transform:translateY(-1px);}
+  .hcta-btn-secondary{background:transparent;color:#fff;padding:14px 26px;border:2px solid rgba(255,255,255,.7);}
+  .hcta-btn-secondary:hover{background:rgba(255,255,255,.12);border-color:#fff;}
 </style>
-<div class="ctaDemo-wrap">
-  <span class="ctaDemo-flag">＼ 追加提案 ／ 記事末尾に設置するCTA例　<small>※この青いカードが新規追加部分です</small></span>
-  <div class="ctaDemo-card">
-    <p class="ctaDemo-eyebrow">流通・小売業界での転職をお考えの方へ</p>
-    <h2 class="ctaDemo-h">この会社・この業界で働くことに、<br><span class="u-accent">少しでも興味を持ったら。</span></h2>
-    <p class="ctaDemo-body">ひろしま企業図鑑は、70年にわたり広島の企業を取材してきた実績をもとに、地元を熟知した専任担当者があなたの転職をサポートします。フジのような掲載企業には、求人票に出ていない<b style="color:#fff;">非公開求人</b>も。東京からのUIJターン転職にも対応しています。</p>
-    <div class="ctaDemo-btnrow">
-      <a class="ctaDemo-btn" href="https://zukan.biz/tenshoku/"><span>無料で転職相談する</span><span class="arw">→</span></a>
-      <span class="ctaDemo-note">ご相談・ご登録は無料／オンライン面談OK</span>
+<div style="max-width:800px;margin:40px auto 0;padding:0 24px;font-family:'Noto Sans JP',system-ui,sans-serif;"><span style="display:inline-block;background:#eef2fb;color:#0B2C7B;font-size:12px;font-weight:700;letter-spacing:.04em;padding:5px 12px;border-radius:5px;">＼ 追加提案 ／ 記事末尾に設置するCTA　<span style="font-weight:500;color:#5b6b8a;">※この枠が新規追加部分です</span></span></div>
+<!-- 転職相談CTA -->
+<div class="hcta-wrap">
+  <div class="hcta-card">
+
+    <div class="hcta-eyebrow">
+      <span class="tick"></span>
+      <span class="txt">転職をお考えの方へ</span>
+      <span class="tick"></span>
     </div>
-    <div class="ctaDemo-tags">
-      <span class="ctaDemo-tag">広島県内の転職</span>
-      <span class="ctaDemo-tag">東京→広島UIJターン</span>
-      <span class="ctaDemo-tag">非公開求人あり</span>
+
+    <h2 class="hcta-title">広島の企業との<span class="mark">強い結び付き</span>を活かした転職支援</h2>
+
+    <p class="hcta-lead">70年を超える実績を武器に、非公開求人や東京からのUIJターン転職にも対応しています。</p>
+
+    <div class="hcta-btns">
+
+      <div class="hcta-col">
+        <div class="hcta-micro">
+          <span class="slash l"></span><b>まずは気軽にメールで相談</b><span class="slash r"></span>
+        </div>
+        <a href="https://zukan.biz/tenshoku/" class="hcta-btn hcta-btn-primary">無料で転職相談する<svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+      </div>
+
+      <div class="hcta-col">
+        <div class="hcta-micro">
+          <span class="slash l"></span><b>当サービスの特徴をまとめました</b><span class="slash r"></span>
+        </div>
+        <a href="#" class="hcta-btn hcta-btn-secondary">資料請求する<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;"><path d="M12 3v11m0 0l-4-4m4 4l4-4M5 20h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+      </div>
+
     </div>
+
   </div>
 </div>
-<!-- ===== 追加提案：記事末尾CTA（デモ） ここまで ===== -->
+<!-- ===== 追加CTA ここまで ===== -->
 
 <ul class="p-entry__nav c-entry-nav">
 					<li class="c-entry-nav__item c-entry-nav__item--prev">
