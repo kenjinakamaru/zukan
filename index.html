@@ -1,452 +1,794 @@
-<!DOCTYPE html><html><head><style>
-    .sc-placeholder{background:color-mix(in srgb,currentColor 8%,transparent);
-      border:1px solid color-mix(in srgb,currentColor 50%,transparent);
-      border-radius:2px;box-sizing:border-box;overflow:hidden}
-    @keyframes sc-shine{0%{background-position:100% 50%}100%{background-position:0% 50%}}
-    html.sc-dc-streaming .sc-placeholder,
-    html.sc-dc-streaming .sc-interp.sc-missing{position:relative;
-      background:color-mix(in srgb,currentColor 5%,transparent);
-      border-color:transparent}
-    html.sc-dc-streaming .sc-placeholder::before,
-    html.sc-dc-streaming .sc-interp.sc-missing::before{content:'';
-      position:absolute;inset:0;pointer-events:none;
-      background:linear-gradient(90deg,rgba(217,119,87,0) 25%,rgba(247,225,211,.95) 37%,rgba(217,119,87,0) 63%);
-      background-size:400% 100%;animation:sc-shine 1.4s ease infinite}
-    html.sc-dc-streaming .sc-placeholder:nth-child(n+9 of .sc-placeholder)::before,
-    html.sc-dc-streaming .sc-interp.sc-missing:nth-child(n+9 of .sc-interp.sc-missing)::before{animation:none;
-      background:color-mix(in srgb,currentColor 8%,transparent)}
-    .sc-placeholder-error{padding:4px 8px;font:11px/1.4 ui-monospace,monospace;
-      color:color-mix(in srgb,currentColor 70%,transparent);word-break:break-word}
-    .sc-interp.sc-missing{display:inline-block;width:2em;height:1em;overflow:hidden;
-      vertical-align:text-bottom;background:rgba(255,255,255,.3);border:1px solid rgba(0,0,0,.5);
-      border-radius:2px;box-sizing:border-box;color:transparent;
-      user-select:none}
-    .sc-interp.sc-unresolved{font-family:ui-monospace,monospace;font-size:.85em;
-      color:color-mix(in srgb,currentColor 50%,transparent);
-      background:color-mix(in srgb,currentColor 10%,transparent);border-radius:3px;
-      padding:0 3px}
-    .sc-host.sc-has-error{position:relative}
-    .sc-logic-error{position:absolute;top:8px;left:8px;z-index:2147483647;max-width:60ch;
-      padding:6px 10px;background:#b00020;color:#fff;font:12px/1.4 ui-monospace,monospace;
-      border-radius:4px;white-space:pre-wrap;pointer-events:none}
-    /* Mirrors PRINT_BASELINE_CSS in apps/web deck-stage-export.ts — keep both
-       in sync until dc-runtime regains a build step. */
-    @media print {
-      @page { margin: 0.5cm; }
-      figure, table { break-inside: avoid; }
-      #dc-root, #dc-root > .sc-host { height: auto; }
-      *, *::before, *::after {
-        print-color-adjust: exact; -webkit-print-color-adjust: exact;
-        backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
-        animation-delay: -99s !important; animation-duration: .001s !important;
-        animation-iteration-count: 1 !important; animation-fill-mode: both !important;
-        animation-play-state: running !important; transition-duration: 0s !important;
-      }
-    }
-  </style>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ひろしま企業図鑑 ハイクラス転職LP 構成案</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#dcdcda;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif;color:#2F2F2F;-webkit-font-smoothing:antialiased}
+  .stage{min-height:100vh;padding:36px 24px 72px;display:flex;flex-direction:column;align-items:center;gap:20px}
+  .w{width:100%;max-width:1180px}
 
-<style>x-dc{display:none!important}</style><style>html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}</style><style data-dc-tpl="4">
-  * { box-sizing: border-box; }
-  body { margin: 0; background: #dcdcda; font-family: "Noto Sans JP", sans-serif; color: #2F2F2F; -webkit-font-smoothing: antialiased; }
-</style></head>
+  /* ヘッダー */
+  .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .tag{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;background:#2F2F2F;color:#fff;padding:6px 12px;border-radius:4px;font-size:12px;font-weight:700;letter-spacing:.14em}
+  .head-sub{font-size:13px;color:#666}
+  .legend{display:flex;flex-direction:column;gap:7px;background:#fff;border:1px solid #c4c4c4;border-radius:6px;padding:11px 14px}
+  .legend-t{font-size:11px;font-weight:700;color:#909090;letter-spacing:.1em}
+  .legend-row{display:flex;gap:16px;flex-wrap:wrap}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:12px;color:#555}
+  .bdg{width:44px;text-align:center;border-radius:4px;padding:2px 0;font-size:11px;font-weight:700}
+  .bdg-keep{background:#e4e4e4;color:#555;border:1px solid #c4c4c4}
+  .bdg-rev{background:#fff;color:#F03020;border:1.5px solid #F03020}
+  .bdg-new{background:#F03020;color:#fff;border:1.5px solid #F03020}
+  .bdg-del{background:#fff;color:#8a8a8a;border:1.5px dashed #8a8a8a;text-decoration:line-through}
+
+  /* 方針バー */
+  .policy{background:#2F2F2F;color:#fff;border-radius:8px;padding:20px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .policy-l{font-size:11px;font-weight:700;letter-spacing:.12em;color:#FFD24A;margin-bottom:7px}
+  .policy-v{font-size:15px;line-height:1.65}
+  .policy-note{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.22);padding-top:14px;font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.8)}
+
+  /* ブラウザ枠 */
+  .browser{background:#fff;border:1px solid #a9a9a9;border-radius:10px 10px 8px 8px;overflow:hidden}
+  .chrome{display:flex;align-items:center;gap:12px;background:#ececea;border-bottom:1px solid #c4c4c4;padding:10px 16px}
+  .dots{display:flex;gap:7px}
+  .dots span{width:12px;height:12px;border-radius:50%;background:#c9c9c9}
+  .url{flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #c4c4c4;border-radius:16px;padding:6px 14px;font-size:13px;color:#666}
+
+  /* セクション */
+  section{padding:34px 44px 40px}
+  section.alt{background:#fafaf8}
+  .sec-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px}
+  .num{font-size:34px;font-weight:900;color:#e6e6e4;line-height:.9;letter-spacing:.02em;flex:0 0 auto}
+  .sec-meta{display:flex;flex-direction:column;gap:6px}
+  .sec-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .pill{border-radius:4px;padding:3px 12px;font-size:12px;font-weight:700}
+  .pill-keep{background:#e4e4e4;color:#555;border:1px solid #c4c4c4}
+  .pill-rev{background:#fff;color:#F03020;border:1.5px solid #F03020}
+  .pill-new{background:#F03020;color:#fff;border:1.5px solid #F03020}
+  .pill-del{background:#fff;color:#8a8a8a;border:1.5px dashed #8a8a8a}
+  .pill-sm{background:#fff;color:#F03020;border:1px solid #F03020;border-radius:4px;padding:2px 9px;font-size:11px;font-weight:700}
+  .sec-name{font-size:15px;font-weight:700;color:#2F2F2F;letter-spacing:.02em}
+  .why{display:flex;align-items:baseline;gap:7px;font-size:12.5px;color:#8a8a8a}
+  .why b{color:#F03020;flex:0 0 auto}
+  .why span{line-height:1.55}
+  .div{border-top:1.5px dashed #c4c4c4;margin:0 44px}
+
+  /* 汎用 */
+  .ph{border:1px solid #b0b0b0;border-radius:6px;background:
+      linear-gradient(to right top,transparent calc(50% - .6px),#d0d0d0 calc(50% - .6px),#d0d0d0 calc(50% + .6px),transparent calc(50% + .6px)),
+      linear-gradient(to left top,transparent calc(50% - .6px),#d0d0d0 calc(50% - .6px),#d0d0d0 calc(50% + .6px),transparent calc(50% + .6px)) #f4f4f2;
+      display:flex;align-items:center;justify-content:center}
+  .ph-lbl{background:#fff;border:1px solid #c4c4c4;color:#8a8a8a;font-size:13px;padding:5px 14px;border-radius:4px}
+  .alert{border:1.5px solid #F03020;background:#fbeeec;border-radius:6px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;margin-top:18px}
+  .alert-t{font-size:11px;font-weight:700;color:#F03020;margin-bottom:4px}
+  .alert-b{font-size:14px;line-height:1.7;color:#333}
+  .addnote{border-left:4px solid #F03020;background:#fbeeec;padding:12px 16px;border-radius:0 6px 6px 0;font-size:14px;line-height:1.7;color:#333}
+  .addnote b{color:#F03020;font-weight:700}
+
+  /* ヒーロー */
+  .hero{display:grid;grid-template-columns:1fr .92fr;gap:34px;align-items:center}
+  .h-opts{display:flex;flex-direction:column;gap:12px}
+  .h-opt{border:1px solid #c4c4c4;border-radius:8px;padding:16px 18px;background:#fff;position:relative}
+  .h-opt.pick{border:2px solid #F03020;background:#fffdfc}
+  .h-opt-k{position:absolute;top:-9px;left:14px;background:#F03020;color:#fff;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.06em}
+  .h-copy{font-size:26px;font-weight:900;line-height:1.35;letter-spacing:.01em}
+  .h-sub{font-size:15px;line-height:1.8;color:#555;margin-top:16px}
+  .cta{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:#F03020;color:#fff;padding:15px 30px;border-radius:6px;font-size:16px;font-weight:700}
+  .cta-note{font-size:11.5px;color:#8a8a8a;margin-top:8px}
+
+  /* 3ステップ */
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .step{background:#fff;border:1px solid #c4c4c4;border-radius:8px;padding:22px 20px;display:flex;flex-direction:column;gap:12px;position:relative}
+  .step-n{width:30px;height:30px;border-radius:50%;background:#234179;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+  .step-t{font-size:16px;font-weight:700;line-height:1.5}
+  .step-b{font-size:13.5px;line-height:1.75;color:#555}
+  .arrow{position:absolute;right:-13px;top:50%;transform:translateY(-50%);z-index:2;color:#F03020;font-size:20px;font-weight:900}
+
+  /* 求人カード */
+  .jobs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .job{background:#fff;border:1px solid #b0b0b0;border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+  .job-h{background:#234179;color:#fff;padding:12px 16px}
+  .job-h .cat{font-size:11px;color:#cdd8ea;letter-spacing:.06em}
+  .job-h .pos{font-size:16px;font-weight:800;margin-top:3px;line-height:1.4}
+  .job-b{padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px}
+  .job-meta{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:#555;border-bottom:1px dashed #c4c4c4;padding-bottom:11px}
+  .job-meta i{color:#8a8a8a;font-style:normal;display:inline-block;width:5.2em}
+  .job-y{font-size:17px;font-weight:800;color:#F03020}
+  .job-blk .l{font-size:11px;font-weight:700;color:#234179;letter-spacing:.04em;margin-bottom:4px}
+  .job-blk .t{font-size:13px;line-height:1.75;color:#333}
+  .job-f{margin-top:auto;border-top:1px solid #e4e4e4;padding:11px 16px;background:#fafaf8;font-size:11.5px;color:#8a8a8a;line-height:1.5}
+
+  /* 年収 */
+  .salary{display:grid;grid-template-columns:.85fr 1fr;gap:30px;align-items:center}
+  .sal-box{border:2px solid #234179;border-radius:8px;padding:24px;text-align:center;background:#fff}
+  .sal-l{font-size:12px;font-weight:700;color:#234179;letter-spacing:.08em}
+  .sal-v{font-size:36px;font-weight:900;color:#234179;margin:8px 0 2px;letter-spacing:.01em}
+  .sal-u{font-size:16px}
+  .sal-n{font-size:12px;color:#8a8a8a}
+  .facts{display:flex;flex-direction:column;gap:10px}
+  .fact{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.7;color:#333}
+  .fact::before{content:"";flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#F03020;margin-top:9px}
+
+  /* ターゲット3タイプ */
+  .types{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .type{background:#fff;border:1px solid #c4c4c4;border-radius:8px;padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+  .type-n{font-size:11px;font-weight:700;color:#F03020;letter-spacing:.1em}
+  .type-t{font-size:16.5px;font-weight:700;line-height:1.55}
+  .type-b{font-size:13.5px;line-height:1.75;color:#555}
+
+  /* フロー */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;align-items:start;position:relative}
+  .flow-line{position:absolute;top:26px;left:12%;right:12%;height:2px;background:#d0d0d0;z-index:0}
+  .fstep{display:flex;flex-direction:column;align-items:center;gap:12px;z-index:1;padding:0 8px}
+  .fdot{width:54px;height:54px;border-radius:50%;border:2px solid #b0b0b0;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#666}
+  .fdot.hot{border-color:#F03020;color:#F03020;border-width:3px}
+  .ft{font-size:14.5px;font-weight:700;text-align:center;line-height:1.45}
+  .fb{font-size:12.5px;color:#666;text-align:center;line-height:1.6}
+  .fcallout{position:relative;background:#F03020;color:#fff;font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:6px;line-height:1.45;text-align:center;max-width:150px}
+  .fcallout span{position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(45deg);width:9px;height:9px;background:#F03020}
+
+  /* フォーム */
+  .form{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+  .f-row{display:flex;flex-direction:column;gap:6px}
+  .f-l{font-size:13px;font-weight:700;color:#555}
+  .f-i{height:44px;border:1px solid #b0b0b0;border-radius:6px;background:#fff;display:flex;align-items:center;padding:0 14px;color:#b0b0b0;font-size:14px}
+  .chips{display:flex;gap:9px;flex-wrap:wrap}
+  .chip{border:1px solid #F03020;background:#fff;color:#333;border-radius:20px;padding:8px 16px;font-size:13.5px}
+  .f-cut{border:1.5px dashed #8a8a8a;border-radius:8px;padding:14px 18px;background:#f4f4f2}
+  .f-cut-t{font-size:11px;font-weight:700;color:#8a8a8a;letter-spacing:.06em;margin-bottom:8px}
+  .f-cut-l{font-size:13.5px;color:#777;line-height:1.9;text-decoration:line-through}
+  .f-btn{align-self:center;background:#F03020;color:#fff;padding:15px 48px;border-radius:6px;font-size:16px;font-weight:700}
+
+  /* 削除セクション */
+  .del-box{border:1.5px dashed #8a8a8a;border-radius:8px;padding:20px 22px;background:#f4f4f2;display:flex;flex-direction:column;gap:14px}
+  .del-item{display:flex;gap:14px;align-items:flex-start}
+  .del-name{font-size:15px;font-weight:700;color:#777;text-decoration:line-through;flex:0 0 220px}
+  .del-why{font-size:13.5px;line-height:1.7;color:#555}
+
+  /* 導線 */
+  .lead{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start}
+  .lead-card{background:#fff;border:1px solid #c4c4c4;border-radius:8px;padding:20px}
+  .lead-t{font-size:14px;font-weight:700;margin-bottom:12px}
+  .art{border:1px solid #c4c4c4;border-radius:6px;background:#fff;padding:16px;display:flex;flex-direction:column;gap:9px}
+  .bar{height:10px;border-radius:3px;background:#ededed}
+  .cta-mock{margin-top:6px;background:linear-gradient(160deg,#2C7AC9 0%,#124487 54%,#071f4d 100%);border:1px solid #0a1f4a;outline:3px solid #FFD24A;outline-offset:-6px;padding:18px;color:#fff;text-align:center}
+  .cta-mock .eb{font-size:10.5px;font-weight:700;color:#FFD24A;letter-spacing:.08em}
+  .cta-mock .ti{font-size:17px;font-weight:800;line-height:1.5;margin:8px 0 9px}
+  .cta-mock .le{font-size:11.5px;line-height:1.7;color:rgba(255,255,255,.85)}
+  .cta-mock .bt{margin-top:12px;background:linear-gradient(180deg,#F4A62A,#EE9515);color:#fff;font-size:14px;font-weight:800;padding:11px;display:block}
+  .side-mock{width:100%;background:linear-gradient(160deg,#2C7AC9 0%,#124487 54%,#071f4d 100%);border:1px solid #0a1f4a;outline:3px solid #FFD24A;outline-offset:-6px;padding:20px;color:#fff}
+
+  /* 表 */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{border:1px solid #c4c4c4;padding:11px 14px;text-align:left;vertical-align:top}
+  thead th{background:#234179;color:#fff;border-color:#234179;font-weight:700;font-size:13px}
+  tbody th{background:#f3f5f4;font-weight:700;color:#333;width:230px}
+  td{color:#555;line-height:1.65}
+
+  .foot{font-size:12px;color:#888;text-align:center;line-height:1.7}
+
+  @media (max-width:900px){
+    section{padding:26px 20px 30px}
+    .div{margin:0 20px}
+    .policy,.steps3,.jobs,.types,.hero,.salary,.lead{grid-template-columns:1fr}
+    .flow{grid-template-columns:repeat(2,1fr);gap:26px 0}
+    .flow-line{display:none}
+    .del-name{flex:0 0 auto}
+  }
+</style>
+</head>
 <body>
+<div class="stage">
 
-<div id="dc-root"><div class="sc-host" data-sc-name="転職LP ワイヤーフレーム（スタンドアロン）"><div data-dc-tpl="5" style="min-height: 100vh; padding: 36px 24px 72px; display: flex; flex-direction: column; align-items: center; gap: 20px;">
-
-  
-  <div data-dc-tpl="6" style="width: 100%; max-width: 1180px; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap;">
-    <div data-dc-tpl="7" style="display: flex; flex-direction: column; gap: 6px;">
-      <div data-dc-tpl="8" style="display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; background: rgb(47, 47, 47); color: rgb(255, 255, 255); padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em;">
-        WIREFRAME / DRAFT
-      </div>
-      <div data-dc-tpl="9" style="font-size: 13px; color: rgb(102, 102, 102); font-weight: 400;">転職支援サービスLP 再設計案 ／ 提案用ワイヤーフレーム</div>
+  <!-- ヘッダー -->
+  <div class="w head">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="tag">WIREFRAME / DRAFT</div>
+      <div class="head-sub">ハイクラス転職支援LP 構成案 ／ 2026年7月28日 方針変更版（前版：転職支援サービスLP 再設計案）</div>
     </div>
-    <div data-dc-tpl="10" style="display: flex; flex-direction: column; gap: 7px; background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 6px; padding: 11px 14px;">
-      <div data-dc-tpl="11" style="font-size: 11px; font-weight: 700; color: rgb(144, 144, 144); letter-spacing: 0.1em;">変更ステータス 凡例</div>
-      <div data-dc-tpl="12" style="display: flex; gap: 16px; flex-wrap: wrap;">
-        <div data-dc-tpl="13" style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgb(85, 85, 85);">
-          <span data-dc-tpl="14" style="width: 44px; text-align: center; background: rgb(228, 228, 228); color: rgb(85, 85, 85); border: 1px solid rgb(196, 196, 196); border-radius: 4px; padding: 2px 0px; font-size: 11px; font-weight: 700;">維持</span>
-          <span data-dc-tpl="15">既存を踏襲</span>
-        </div>
-        <div data-dc-tpl="16" style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgb(85, 85, 85);">
-          <span data-dc-tpl="17" style="width: 44px; text-align: center; background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1.5px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 0px; font-size: 11px; font-weight: 700;">改訂</span>
-          <span data-dc-tpl="18">手を入れる</span>
-        </div>
-        <div data-dc-tpl="19" style="display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgb(85, 85, 85);">
-          <span data-dc-tpl="20" style="width: 44px; text-align: center; background: rgb(240, 48, 32); color: rgb(255, 255, 255); border: 1.5px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 0px; font-size: 11px; font-weight: 700;">新規</span>
-          <span data-dc-tpl="21">新設</span>
-        </div>
+    <div class="legend">
+      <div class="legend-t">変更ステータス 凡例</div>
+      <div class="legend-row">
+        <div class="legend-item"><span class="bdg bdg-keep">維持</span><span>既存を踏襲</span></div>
+        <div class="legend-item"><span class="bdg bdg-rev">改訂</span><span>手を入れる</span></div>
+        <div class="legend-item"><span class="bdg bdg-new">新規</span><span>新設</span></div>
+        <div class="legend-item"><span class="bdg bdg-del">削除</span><span>今回は載せない</span></div>
       </div>
     </div>
   </div>
 
-  
-  <div data-dc-tpl="22" style="width: 100%; max-width: 1180px; background: rgb(255, 255, 255); border: 1px solid rgb(169, 169, 169); border-radius: 10px 10px 8px 8px; overflow: hidden;">
+  <!-- 方針バー -->
+  <div class="w policy">
+    <div>
+      <div class="policy-l">照準</div>
+      <div class="policy-v">東京UIJターン者の<b>ハイクラス転職</b>に絞る。年収1,000万円レベル。</div>
+    </div>
+    <div>
+      <div class="policy-l">訴求の軸</div>
+      <div class="policy-v">年収でも暮らしでもなく<b>ポジション</b>。取材で経営者本人から聞いた、まだ求人票になっていない役割。</div>
+    </div>
+    <div>
+      <div class="policy-l">集客</div>
+      <div class="policy-v"><b>広告は使わない</b>。企業図鑑の記事からの内部流入のみ。CTAは「非公開求人を見る」1本。</div>
+    </div>
+    <div class="policy-note">
+      前版は「広島で、はたらこ。」を中心に、県内転職とUIJターンの両方、暮らしの魅力まで含めた総合LPだった。今回は対象・訴求・流入経路の3つすべてを絞り込む。前版から引き継ぐのは「取材実績」と「非公開求人」の2要素のみ。
+    </div>
+  </div>
 
-    
-    <div data-dc-tpl="23" style="display: flex; align-items: center; gap: 12px; background: rgb(236, 236, 234); border-bottom: 1px solid rgb(196, 196, 196); padding: 10px 16px;">
-      <div data-dc-tpl="24" style="display: flex; gap: 7px;">
-        <span data-dc-tpl="25" style="width: 12px; height: 12px; border-radius: 50%; background: rgb(201, 201, 201);"></span>
-        <span data-dc-tpl="26" style="width: 12px; height: 12px; border-radius: 50%; background: rgb(201, 201, 201);"></span>
-        <span data-dc-tpl="27" style="width: 12px; height: 12px; border-radius: 50%; background: rgb(201, 201, 201);"></span>
-      </div>
-      <div data-dc-tpl="28" style="flex: 1 1 0%; display: flex; align-items: center; gap: 8px; background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 16px; padding: 6px 14px; font-size: 13px; color: rgb(102, 102, 102);">
-        <svg data-dc-tpl="29" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><rect data-dc-tpl="30" x="5" y="11" width="14" height="10" rx="2"></rect><path data-dc-tpl="31" d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+  <!-- LP本体 -->
+  <div class="w browser">
+    <div class="chrome">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div class="url">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#909090" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
         zukan.biz/tenshoku/
       </div>
     </div>
 
-    
-    <div data-dc-tpl="32">
-
-      
-      <section data-dc-tpl="33" style="padding: 34px 44px 40px;">
-        <div data-dc-tpl="34" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px;">
-          <span data-dc-tpl="35" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9; letter-spacing: 0.02em;">01</span>
-          <div data-dc-tpl="36" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="37" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="38" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1.5px solid rgb(240, 48, 32); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">改訂</span>
-              <span data-dc-tpl="39" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47); letter-spacing: 0.02em;">ヒーロー</span>
+    <!-- 01 ヒーロー -->
+    <section>
+      <div class="sec-head">
+        <span class="num">01</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-rev">改訂</span><span class="pill-sm">全面差替</span>
+            <span class="sec-name">ヒーロー</span>
+          </div>
+          <div class="why"><b>変更理由</b><span>「広島で、はたらこ。」は対象が広すぎる。求人票になる前のポジションを持っていることを最初の3秒で言い切る</span></div>
+        </div>
+      </div>
+      <div class="hero">
+        <div>
+          <div class="h-opts">
+            <div class="h-opt pick">
+              <span class="h-opt-k">案A</span>
+              <div class="h-copy">その求人は、<br>まだ求人票になっていない。</div>
             </div>
-            <div data-dc-tpl="40" style="display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: rgb(138, 138, 138);"><span data-dc-tpl="41" style="color: rgb(240, 48, 32); font-weight: 700; flex: 0 0 auto;">変更理由</span><span data-dc-tpl="42" style="line-height: 1.5;">「中途採用の方へ 安心のサービスを。」という旧コピーは誰向けか曖昧だったため全面差し替え</span></div>
+            <div class="h-opt">
+              <span class="h-opt-k">案B</span>
+              <div class="h-copy" style="font-size:21px">広島の経営者が、次の戦略のために<br>探している人がいます。</div>
+            </div>
+            <div class="h-opt">
+              <span class="h-opt-k">案C</span>
+              <div class="h-copy" style="font-size:21px">中期経営計画には書かれている。<br>求人サイトには、まだ出ていない。</div>
+            </div>
+          </div>
+          <div class="h-sub">
+            ひろしま企業図鑑は、広島の経営者に直接取材し、これから何をやろうとしているのかを聞いています。その中には「この戦略を任せられる人が社内にいない」という話が必ず出てきます。私たちは、それが求人になる前に知っています。
+          </div>
+          <div style="margin-top:20px">
+            <div class="cta">非公開求人を見る
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h13M12 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="cta-note">副CTAは置かない（後述 09 の方針）</div>
           </div>
         </div>
-        <div data-dc-tpl="43" style="display: grid; grid-template-columns: 1fr 0.92fr; gap: 34px; align-items: center;">
-          <div data-dc-tpl="44" style="display: flex; flex-direction: column; gap: 20px;">
-            <div data-dc-tpl="45" style="font-size: 44px; font-weight: 900; line-height: 1.15; letter-spacing: 0.01em;">広島で、はたらこ。</div>
-            <div data-dc-tpl="46" style="font-size: 16px; line-height: 1.8; color: rgb(85, 85, 85); max-width: 460px;">東京圏からのUIJターンも、広島県内での転職も。地元を熟知した専任担当者が、その先の暮らしまで伴走します。</div>
-            <div data-dc-tpl="47" style="align-self: flex-start; background: rgb(240, 48, 32); color: rgb(255, 255, 255); padding: 15px 30px; border-radius: 6px; font-size: 16px; font-weight: 700;">まずはオンラインで相談する</div>
+        <div class="ph" style="aspect-ratio:4/3">
+          <span class="ph-lbl">取材風景の写真枠</span>
+        </div>
+      </div>
+      <div class="alert">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F03020" stroke-width="2" style="flex:0 0 auto;margin-top:1px"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+        <div>
+          <div class="alert-t">写真の方向性</div>
+          <div class="alert-b">求人サイトによくある「笑顔の転職者」写真は使わない。経営者に取材している現場の写真を使い、図鑑本体のトーンとつなげる。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 02 なぜ持っているのか -->
+    <section class="alt">
+      <div class="sec-head">
+        <span class="num">02</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-new">新規</span><span class="pill-sm">このLPの土台</span>
+            <span class="sec-name">なぜ図鑑が、公募前のポジションを知っているのか</span>
           </div>
-          <div data-dc-tpl="48" style="aspect-ratio: 4 / 3; border: 1px solid rgb(176, 176, 176); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242); border-radius: 6px; display: flex; align-items: center; justify-content: center;">
-            <span data-dc-tpl="49" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); color: rgb(138, 138, 138); font-size: 13px; padding: 5px 14px; border-radius: 4px;">ビジネスパーソン 写真枠</span>
+          <div class="why"><b>役割</b><span>ここが弱いと、以降のすべてが「ただの求人紹介」に見える。取材媒体であることが唯一の説明になる</span></div>
+        </div>
+      </div>
+      <div class="steps3">
+        <div class="step">
+          <div class="step-n">1</div>
+          <div class="step-t">経営者に取材する</div>
+          <div class="step-b">記者が経営者本人に会い、これから何をやろうとしているのかを聞く。</div>
+          <div class="arrow">›</div>
+        </div>
+        <div class="step">
+          <div class="step-n">2</div>
+          <div class="step-t">足りない人材が見える</div>
+          <div class="step-b">「中期経営計画のこの部分を担う人が社内にいない」という話が出てくる。</div>
+          <div class="arrow">›</div>
+        </div>
+        <div class="step">
+          <div class="step-n">3</div>
+          <div class="step-t">求人票になる前に当てる</div>
+          <div class="step-b">公募される前の段階で、条件に合う方にだけ非公開でお伝えする。</div>
+        </div>
+      </div>
+      <div class="addnote" style="margin-top:20px">
+        <b>前版から引き継ぐ数字 </b>「70年の取材実績」「年間5,000社の取材」をこのセクションの根拠として置く。前版ではMESSAGE欄の補足だったが、今回は差別化の中心に移す。
+      </div>
+      <div class="alert">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F03020" stroke-width="2" style="flex:0 0 auto;margin-top:1px"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+        <div>
+          <div class="alert-t">制作上の注意（本番前に必読）</div>
+          <div class="alert-b">「70年」「年5,000社」「掲載企業数」は正確な数字を確認のうえ記載する。推測値を置かない。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 03 非公開求人サンプル -->
+    <section>
+      <div class="sec-head">
+        <span class="num">03</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-new">新規</span><span class="pill-sm">このLPの主役</span>
+            <span class="sec-name">非公開求人（マスク済み・3〜8件）</span>
+          </div>
+          <div class="why"><b>役割</b><span>「具体的に何があるのか」への回答。企業名は出さず、ポジションの成り立ちだけを見せる</span></div>
+        </div>
+      </div>
+      <div class="jobs">
+        <div class="job">
+          <div class="job-h">
+            <div class="cat">製造業（自動車部品）</div>
+            <div class="pos">経営企画 責任者<br>（新設ポジション）</div>
+          </div>
+          <div class="job-b">
+            <div class="job-meta">
+              <div><i>規模</i>売上約120億円／約400名</div>
+              <div><i>エリア</i>広島県内（本社）</div>
+              <div><i>想定年収</i><span class="job-y">1,000万〜1,200万円</span></div>
+            </div>
+            <div class="job-blk">
+              <div class="l">このポジションが生まれた背景</div>
+              <div class="t">中期経営計画で、既存取引先1社への依存度を下げ、医療機器分野へ参入する方針を掲げている。</div>
+            </div>
+            <div class="job-blk">
+              <div class="l">任される範囲</div>
+              <div class="t">参入領域の選定から、体制づくり、初年度の予算組みまで。社長直下。</div>
+            </div>
+            <div class="job-blk">
+              <div class="l">なぜ社内にいないのか</div>
+              <div class="t">既存事業で伸びてきた組織のため、ゼロから立ち上げた経験を持つ人材が育っていない。</div>
+            </div>
+          </div>
+          <div class="job-f">企業名・事業内容・選考プロセスは、面談時にお伝えします</div>
+        </div>
+
+        <div class="job">
+          <div class="job-h">
+            <div class="cat">サンプル枠 2</div>
+            <div class="pos">ポジション名<br>（島津氏 獲得求人に差替）</div>
+          </div>
+          <div class="job-b">
+            <div class="job-meta">
+              <div><i>規模</i>売上／従業員数（概数）</div>
+              <div><i>エリア</i>広島県内</div>
+              <div><i>想定年収</i><span class="job-y">1,000万円〜</span></div>
+            </div>
+            <div class="job-blk"><div class="l">このポジションが生まれた背景</div><div class="t" style="color:#8a8a8a">中期経営計画のどの戦略に紐づくポジションかを1〜2文で。</div></div>
+            <div class="job-blk"><div class="l">任される範囲</div><div class="t" style="color:#8a8a8a">どこからどこまでを任されるか。誰の直下か。</div></div>
+            <div class="job-blk"><div class="l">なぜ社内にいないのか</div><div class="t" style="color:#8a8a8a">この一文が、取材ベースでしか書けない部分。</div></div>
+          </div>
+          <div class="job-f">企業名・事業内容・選考プロセスは、面談時にお伝えします</div>
+        </div>
+
+        <div class="job">
+          <div class="job-h" style="background:#4a5568">
+            <div class="cat">サンプル枠 3</div>
+            <div class="pos">同フォーマットで<br>7〜8件まで並べる</div>
+          </div>
+          <div class="job-b">
+            <div class="job-meta" style="border-bottom:none;padding-bottom:0">
+              <div style="color:#8a8a8a;line-height:1.8">求人が7〜8件そろうまで<br>LPは公開しない。</div>
+            </div>
+            <div class="job-blk">
+              <div class="l">理由</div>
+              <div class="t">2〜3件しかない状態で公開すると、「実は求人がない」ことが伝わってしまう。件数がそろってからの公開とする。</div>
+            </div>
+            <div class="job-blk">
+              <div class="l">検索UIは付けない</div>
+              <div class="t">件数が少ないうちは、検索・絞り込み機能はかえって少なさを目立たせる。カードを並べるだけにする。</div>
+            </div>
+          </div>
+          <div class="job-f">件数がそろった段階で公開判断</div>
+        </div>
+      </div>
+
+      <div class="alert">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F03020" stroke-width="2" style="flex:0 0 auto;margin-top:1px"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+        <div>
+          <div class="alert-t">マスクの粒度（公開前に1件ずつ確認）</div>
+          <div class="alert-b">
+            1枚目の内容は<b>フォーマットを示すための架空例</b>。実際の掲載内容に必ず差し替える。業種は中分類まで、売上・従業員数は概数、市町村名は出さない。取材した経営者との信頼関係が事業の資産なので、特定につながる書き方は避け、掲載前に島津氏が各件チェックする運用にする。
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <div data-dc-tpl="50" style="border-top: 1.5px dashed rgb(196, 196, 196); margin: 0px 44px;"></div>
+    <div class="div"></div>
 
-      
-      <section data-dc-tpl="51" style="padding: 34px 44px 40px;">
-        <div data-dc-tpl="52" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px;">
-          <span data-dc-tpl="53" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9;">02</span>
-          <div data-dc-tpl="54" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="55" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="56" style="background: rgb(228, 228, 228); color: rgb(85, 85, 85); border: 1px solid rgb(196, 196, 196); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">維持</span>
-              <span data-dc-tpl="57" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 9px; font-size: 11px; font-weight: 700;">＋一文追加</span>
-              <span data-dc-tpl="58" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47);">MESSAGE</span>
-            </div>
-            <div data-dc-tpl="59" style="display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: rgb(138, 138, 138);"><span data-dc-tpl="60" style="color: rgb(240, 48, 32); font-weight: 700; flex: 0 0 auto;">注記</span><span data-dc-tpl="61" style="line-height: 1.5;">「70年・年5,000社の取材実績」「非公開求人」という差別化要素は維持</span></div>
+    <!-- 04 想定年収と条件 -->
+    <section class="alt">
+      <div class="sec-head">
+        <span class="num">04</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-new">新規</span>
+            <span class="sec-name">想定年収と条件</span>
+          </div>
+          <div class="why"><b>役割</b><span>レンジを明示して対象者を絞る。合わない人には離脱してもらう</span></div>
+        </div>
+      </div>
+      <div class="salary">
+        <div class="sal-box">
+          <div class="sal-l">想定年収レンジ</div>
+          <div class="sal-v">900<span class="sal-u">万</span>〜1,500<span class="sal-u">万円</span></div>
+          <div class="sal-n">※実際の獲得求人に合わせて確定</div>
+        </div>
+        <div class="facts">
+          <div class="fact">役員・事業責任者クラスのポジションを含む</div>
+          <div class="fact">社長直下の案件が多い</div>
+          <div class="fact">新設ポジションが中心。既存の欠員補充ではない</div>
+          <div class="fact">「地方転職は年収が下がる」という先入観への回答を1ブロック置く</div>
+        </div>
+      </div>
+      <div class="alert">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F03020" stroke-width="2" style="flex:0 0 auto;margin-top:1px"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+        <div>
+          <div class="alert-t">制作上の注意（本番前に必読）</div>
+          <div class="alert-b">地域間の年収比較データは、出典が確認できない限り載せない。前版にあった東京圏との比較表は今回削除し（後述 10）、<b>実際の求人レンジを見せることで代替する</b>。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 05 想定する方 -->
+    <section>
+      <div class="sec-head">
+        <span class="num">05</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-rev">改訂</span><span class="pill-sm">全面差替</span>
+            <span class="sec-name">こんな方に</span>
+          </div>
+          <div class="why"><b>変更理由</b><span>前版の「こんなお悩みありませんか？」3項目（時間・情報・オンライン不安）は一般的な転職の悩みで、ハイクラス層が動く理由と噛み合わない</span></div>
+        </div>
+      </div>
+      <div class="types">
+        <div class="type">
+          <div class="type-n">TYPE 01</div>
+          <div class="type-t">東京で成果を出したが、<br>次に任される範囲が見えない</div>
+          <div class="type-b">大手・成長企業で事業や部門を動かしてきたが、上が詰まっている。裁量の総量で選びたい方。</div>
+        </div>
+        <div class="type">
+          <div class="type-n">TYPE 02</div>
+          <div class="type-t">広島に戻る前提で、<br>ポジションを落としたくない</div>
+          <div class="type-b">Uターンの意向はあるが、地方転職＝格落ちを警戒している方。戦略上の必要から新設されるポジションを紹介します。</div>
+        </div>
+        <div class="type">
+          <div class="type-n">TYPE 03</div>
+          <div class="type-t">経営そのものに<br>関わりたい</div>
+          <div class="type-b">事業承継・経営幹部ポストを含めて考えている方。後継者を探している経営者と直接お引き合わせします。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 06 事例 -->
+    <section class="alt">
+      <div class="sec-head">
+        <span class="num">06</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-new">新規</span><span class="pill-sm">掲載可否の確認待ち</span>
+            <span class="sec-name">実際にあったお引き合わせ（1件）</span>
+          </div>
+          <div class="why"><b>役割</b><span>TYPE 03 の裏付け。実例が1件あるので、件数を明示して載せる</span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center">
+        <div style="background:#fff;border:1px solid #c4c4c4;border-radius:8px;padding:22px 24px">
+          <div style="font-size:11px;font-weight:700;color:#F03020;letter-spacing:.08em;margin-bottom:10px">CASE 01</div>
+          <div style="font-size:17px;font-weight:700;line-height:1.6;margin-bottom:12px">東京のハイクラス人材と、<br>M&amp;Aを進めている広島の経営者</div>
+          <div style="font-size:13.5px;line-height:1.85;color:#555">
+            東京在住の方が、企業図鑑の採用ページ経由で「事業承継先とのマッチングを狙って」エントリー。買収先の社長ポストを担う人材を常時探していた地場企業の社長と、実際にお引き合わせしました。
           </div>
         </div>
-        <div data-dc-tpl="62" style="display: grid; grid-template-columns: 0.8fr 1fr; gap: 34px; align-items: center;">
-          <div data-dc-tpl="63" style="aspect-ratio: 16 / 10; border: 1px solid rgb(176, 176, 176); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242); border-radius: 6px; display: flex; align-items: center; justify-content: center;">
-            <span data-dc-tpl="64" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); color: rgb(138, 138, 138); font-size: 13px; padding: 5px 14px; border-radius: 4px;">写真枠</span>
+        <div class="ph" style="aspect-ratio:16/10"><span class="ph-lbl">写真枠（人物特定を避けた構図）</span></div>
+      </div>
+      <div class="alert">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F03020" stroke-width="2" style="flex:0 0 auto;margin-top:1px"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+        <div>
+          <div class="alert-t">掲載条件（3つすべて満たすまで公開しない）</div>
+          <div class="alert-b">
+            ① 本人と当該経営者の掲載許可を取る。未確認なら載せない。<br>
+            ② <b>「これまでに1件」と件数を明示する。</b>複数実績があるように読める書き方はしない。<br>
+            ③ 本人・企業が特定されない粒度に落とす。
           </div>
-          <div data-dc-tpl="65" style="display: flex; flex-direction: column; gap: 18px;">
-            <div data-dc-tpl="66" style="font-size: 20px; font-weight: 700; line-height: 1.6;">広島県内企業に精通する担当者が、転職活動全般をサポートします。</div>
-            <div data-dc-tpl="67" style="display: flex; flex-direction: column; gap: 9px;">
-              <div data-dc-tpl="68" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 100%;"></div>
-              <div data-dc-tpl="69" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 96%;"></div>
-              <div data-dc-tpl="70" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 88%;"></div>
-              <div data-dc-tpl="71" style="font-size: 11px; color: rgb(154, 154, 154);">（本文＝既存文言の要約バー）</div>
-            </div>
-            <div data-dc-tpl="72" style="border-left: 4px solid rgb(240, 48, 32); background: rgb(251, 238, 236); padding: 14px 18px; border-radius: 0px 6px 6px 0px;">
-              <div data-dc-tpl="73" style="font-size: 11px; font-weight: 700; color: rgb(240, 48, 32); margin-bottom: 5px;">追記（強調）</div>
-              <div data-dc-tpl="74" style="font-size: 15px; line-height: 1.7; color: rgb(51, 51, 51);">面談はオンラインでも対応可能。帰省のタイミングに合わせた日程調整も、企業さまと直接交渉します。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 07 流れ -->
+    <section>
+      <div class="sec-head">
+        <span class="num">07</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-rev">改訂</span><span class="pill-sm">5→4ステップ／3を新設</span>
+            <span class="sec-name">ご相談から入社までの流れ</span>
+          </div>
+          <div class="why"><b>変更理由</b><span>前版の「企業へ推薦→面接」は一般的なエージェントの流れ。取材で経営者と直接つながっている強みを、プロセスの中で見せる</span></div>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="flow-line"></div>
+        <div class="fstep">
+          <div class="fdot">1</div>
+          <div class="ft">非公開求人<br>リクエスト</div>
+          <div class="fb">フォーム入力 約1分</div>
+        </div>
+        <div class="fstep">
+          <div class="fdot">2</div>
+          <div class="ft">オンライン面談</div>
+          <div class="fb">30〜60分。ご経歴と希望を伺い、該当するポジションの詳細を開示</div>
+        </div>
+        <div class="fstep">
+          <div class="fdot hot">3</div>
+          <div class="ft">経営者本人と会う</div>
+          <div class="fb">選考ではなく、戦略と役割のすり合わせから</div>
+          <div class="fcallout">ここが他社との差<span></span></div>
+        </div>
+        <div class="fstep">
+          <div class="fdot">4</div>
+          <div class="ft">条件提示・入社</div>
+          <div class="fb">条件交渉も当社が代行</div>
+        </div>
+      </div>
+      <div class="addnote" style="margin-top:26px">
+        <b>意図 </b>ハイクラス層は、選考プロセスより先に「経営者と話せるか」を重視する傾向がある（一般的な傾向としての想定で、本件で検証したデータはない）。02 の主張と一貫させるため、ステップ3を明示的に立てる。
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 08 運営者 -->
+    <section class="alt">
+      <div class="sec-head">
+        <span class="num">08</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-keep">維持</span><span class="pill-sm">強化</span>
+            <span class="sec-name">運営者について</span>
+          </div>
+          <div class="why"><b>強化理由</b><span>マスクした求人だけを並べるLPは実在性を疑われやすい。運営主体を出すことで補う</span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:.8fr 1fr;gap:30px;align-items:center">
+        <div class="ph" style="aspect-ratio:16/10"><span class="ph-lbl">担当者の顔写真枠</span></div>
+        <div class="facts">
+          <div class="fact">広島経済研究所／広島経済レポート</div>
+          <div class="fact">ひろしま企業図鑑の説明と、図鑑本体へのリンク</div>
+          <div class="fact">担当者名・顔写真（掲載可否は要確認）</div>
+          <div class="fact">個人情報の取り扱い。<b>現職に知られない旨を明記する</b></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 09 フォーム -->
+    <section>
+      <div class="sec-head">
+        <span class="num">09</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-rev">改訂</span><span class="pill-sm">必須項目を4つに絞る</span>
+            <span class="sec-name">非公開求人リクエストフォーム</span>
+          </div>
+          <div class="why"><b>変更理由</b><span>前版は設問を追加する方向だったが、ハイクラス層に最初から詳細を書かせると離脱する。まず連絡先だけ受け取り、詳細は面談で聞く</span></div>
+        </div>
+      </div>
+      <div class="form">
+        <div class="f-row">
+          <div class="f-l">お名前</div>
+          <div class="f-i"></div>
+        </div>
+        <div class="f-row">
+          <div class="f-l">メールアドレス</div>
+          <div class="f-i"></div>
+        </div>
+        <div class="f-row">
+          <div class="f-l">現在の年収</div>
+          <div class="chips">
+            <span class="chip">〜800万円</span>
+            <span class="chip">800〜1,000万円</span>
+            <span class="chip">1,000〜1,300万円</span>
+            <span class="chip">1,300万円〜</span>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-l">現在の職種・役割（1行）</div>
+          <div class="f-i"></div>
+        </div>
+        <div class="f-row">
+          <div class="f-l">電話番号<span style="color:#8a8a8a;font-weight:400">（任意）</span></div>
+          <div class="f-i"></div>
+        </div>
+
+        <div class="f-cut">
+          <div class="f-cut-t">この段階では聞かない（面談時に回収）</div>
+          <div class="f-cut-l">
+            転職希望時期　／　直近所属会社の業種　／　直近で希望する業種　／　現在お住まいの地域　／　面談方法のご希望　／　その他ご要望　／　職務経歴書のアップロード
+          </div>
+        </div>
+
+        <div class="f-btn">非公開求人を見る</div>
+        <div style="text-align:center;font-size:12px;color:#8a8a8a;line-height:1.7">
+          送信ボタンの文言は、ヒーローのCTAと完全に一致させる<br>
+          送信後の自動返信に「2営業日以内にご連絡します」を明記
+        </div>
+      </div>
+      <div class="addnote" style="margin-top:24px">
+        <b>CTAは1本に絞る </b>「まずは話を聞く」「資料請求」「メルマガ登録」などを併置しない。流入が月数十〜数百セッション規模の間は、選択肢を増やすと各CTAの数字が判断できる量に届かない。
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 10 削除 -->
+    <section class="alt">
+      <div class="sec-head">
+        <span class="num">10</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-del">削除</span>
+            <span class="sec-name">前版から落とすセクション</span>
+          </div>
+          <div class="why"><b>理由</b><span>ポジション訴求を薄めるため、今回は載せない。将来の再検討は可能</span></div>
+        </div>
+      </div>
+      <div class="del-box">
+        <div class="del-item">
+          <div class="del-name">広島で働く、暮らす<br>（東京圏との比較表）</div>
+          <div class="del-why">年収相場・生活費・通勤時間の比較は、①出典のある数値を用意できていない ②「広島がおトク」という結論ありきの表現になりやすい ③年収を軸にするとポジション訴求が薄まる。ハイクラス層は生活費の差では動かない（想定）。年収の話は 04 の実レンジで代替する。</div>
+        </div>
+        <div class="del-item">
+          <div class="del-name">広島で働く先輩たちの声</div>
+          <div class="del-why">前版では「記事が揃うまでComing Soon」としていたが、Coming Soonの枠を3つ並べると準備不足に見える。実例は 06 の1件に絞り、記事が揃ってから再検討する。</div>
+        </div>
+        <div class="del-item">
+          <div class="del-name">こんなお悩みありませんか？</div>
+          <div class="del-why">05「こんな方に」へ差し替え。時間がない・情報がないという一般的な悩みは、年収1,000万円レベルの層が動く理由ではない。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 11 導線 -->
+    <section>
+      <div class="sec-head">
+        <span class="num">11</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-new">新規</span><span class="pill-sm">LP本体と同じ重要度</span>
+            <span class="sec-name">図鑑内の導線（LP外・同時実装）</span>
+          </div>
+          <div class="why"><b>なぜ必要か</b><span>広告を使わない方針のため、流入は図鑑の記事からのみ。現状、企業の個別ページから転職LPへの回遊はほぼ発生していない。ここを作らないとLPは無人になる</span></div>
+        </div>
+      </div>
+
+      <div class="lead">
+        <div class="lead-card">
+          <div class="lead-t">A. 企業個別ページの記事末（主戦場）</div>
+          <div class="art">
+            <div class="bar" style="width:70%;height:14px"></div>
+            <div class="bar"></div><div class="bar" style="width:96%"></div><div class="bar" style="width:88%"></div>
+            <div style="font-size:11px;color:#9a9a9a">（企業取材記事の本文）</div>
+            <div class="cta-mock">
+              <div class="eb">── 転職をお考えの方へ ──</div>
+              <div class="ti">この会社のように、戦略の実行を担う人を探している企業があります</div>
+              <div class="le">求人票になる前のポジション情報を、非公開でお伝えしています。</div>
+              <div class="bt">非公開求人を見る →</div>
             </div>
           </div>
         </div>
-      </section>
 
-      <div data-dc-tpl="75" style="border-top: 1.5px dashed rgb(196, 196, 196); margin: 0px 44px;"></div>
-
-      
-      <section data-dc-tpl="76" style="padding: 34px 44px 40px; background: rgb(250, 250, 248);">
-        <div data-dc-tpl="77" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 24px;">
-          <span data-dc-tpl="78" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9;">03</span>
-          <div data-dc-tpl="79" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="80" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="81" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1.5px solid rgb(240, 48, 32); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">改訂</span>
-              <span data-dc-tpl="82" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 9px; font-size: 11px; font-weight: 700;">全面差替</span>
-              <span data-dc-tpl="83" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47);">こんなお悩みありませんか？</span>
+        <div class="lead-card">
+          <div class="lead-t">B. サイドバー</div>
+          <div class="side-mock">
+            <div style="font-size:10.5px;font-weight:700;color:#FFD24A;letter-spacing:.08em;margin-bottom:9px">── 転職をお考えの方へ</div>
+            <div style="font-size:19px;font-weight:800;line-height:1.5">求人票に<br>なる前の<br>ポジションを。</div>
+            <div style="font-size:11.5px;line-height:1.75;color:rgba(255,255,255,.86);margin:10px 0 14px">経営者に直接取材している私たちだから知っています。</div>
+            <div style="display:flex;gap:12px;margin-bottom:14px">
+              <div style="flex:1;font-size:10px;line-height:1.4;color:rgba(255,255,255,.78)"><b style="display:block;font-size:15px;color:#FFD24A">70年</b>広島企業の<br>取材実績</div>
+              <div style="flex:1;font-size:10px;line-height:1.4;color:rgba(255,255,255,.78)"><b style="display:block;font-size:15px;color:#FFD24A">1,000万</b>想定年収<br>レベル</div>
             </div>
-            <div data-dc-tpl="84" style="display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: rgb(138, 138, 138);"><span data-dc-tpl="85" style="color: rgb(240, 48, 32); font-weight: 700; flex: 0 0 auto;">変更理由</span><span data-dc-tpl="86" style="line-height: 1.5;">旧3項目（時間・情報・求人数）は広島県内在住者のみを想定していたため、UIJターン層にも共通する悩みに統合</span></div>
+            <div style="background:linear-gradient(180deg,#F4A62A,#EE9515);color:#fff;font-size:13.5px;font-weight:800;padding:11px;text-align:center">非公開求人を見る →</div>
           </div>
         </div>
-        <div data-dc-tpl="87" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-          <div data-dc-tpl="88" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;">
-            <div data-dc-tpl="89" style="width: 56px; height: 56px; border-radius: 50%; border: 1px dashed rgb(176, 176, 176); background: rgb(244, 244, 242); display: flex; align-items: center; justify-content: center; color: rgb(165, 165, 165); font-size: 11px;">アイコン</div>
-            <div data-dc-tpl="90" style="font-size: 15px; line-height: 1.65; color: rgb(51, 51, 51);">広島の企業や働き方の実態が、求人票だけではわからない</div>
-          </div>
-          <div data-dc-tpl="91" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;">
-            <div data-dc-tpl="92" style="width: 56px; height: 56px; border-radius: 50%; border: 1px dashed rgb(176, 176, 176); background: rgb(244, 244, 242); display: flex; align-items: center; justify-content: center; color: rgb(165, 165, 165); font-size: 11px;">アイコン</div>
-            <div data-dc-tpl="93" style="font-size: 15px; line-height: 1.65; color: rgb(51, 51, 51);">今の仕事をしながら、転職活動の時間を確保できない</div>
-          </div>
-          <div data-dc-tpl="94" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;">
-            <div data-dc-tpl="95" style="width: 56px; height: 56px; border-radius: 50%; border: 1px dashed rgb(176, 176, 176); background: rgb(244, 244, 242); display: flex; align-items: center; justify-content: center; color: rgb(165, 165, 165); font-size: 11px;">アイコン</div>
-            <div data-dc-tpl="96" style="font-size: 15px; line-height: 1.65; color: rgb(51, 51, 51);">地方への転職が、オンラインだけで完結するのか不安</div>
+      </div>
+
+      <table style="margin-top:24px">
+        <thead>
+          <tr><th>設置場所</th><th>置くもの</th><th>優先度</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>企業個別ページ<br>（/maker/、/food/、/finance_service/ 等）</th>
+            <td>記事末の導線ブロック＋サイドバーバナー。図鑑のオーガニック流入の本体がここにあり、閲覧者には東京の方も含まれる。<b>求人を持つ企業のページには専用文言</b>、それ以外には汎用文言を出す。</td>
+            <td>最優先</td>
+          </tr>
+          <tr><th>トップページ</th><td>グローバルナビおよびメインエリアに1枠</td><td>高</td></tr>
+          <tr><th>業界マップ /gyoukaimap/</th><td>導線ブロック。滞在時間が長く、読み込んでいる読者が多い</td><td>中</td></tr>
+          <tr><th>/hiroshimadehataraku/</th><td>導線ブロック。すでに転職LPへの回遊が発生している</td><td>中</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F03020" stroke-width="2" style="flex:0 0 auto;margin-top:1px"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+        <div>
+          <div class="alert-t">文言の注意（誤解を生むため必読）</div>
+          <div class="alert-b">求人を持っていない企業のページで、<b>「この会社が人材を探しています」と読める書き方をしてはいけない。</b>求人が7〜8件の段階では、汎用文言の主語を「広島の企業」に置く。</div>
+        </div>
+      </div>
+
+      <div class="addnote" style="margin-top:16px">
+        <b>計測 </b>リクエスト送信は<b>新しいイベント名で実装する</b>。現行LPの送信イベントには、テストとスパムによる計上が混ざっており実績指標として使えないため、必ず分離する。追う指標は「企業ページ→LPの回遊率」「LP→リクエスト送信率」「リクエスト→面談実施件数」の3つのみ。
+      </div>
+    </section>
+
+    <div class="div"></div>
+
+    <!-- 12 残課題 -->
+    <section class="alt">
+      <div class="sec-head">
+        <span class="num">12</span>
+        <div class="sec-meta">
+          <div class="sec-line">
+            <span class="pill pill-new">新規</span>
+            <span class="sec-name">残課題と分担</span>
           </div>
         </div>
-      </section>
+      </div>
+      <table>
+        <thead><tr><th>項目</th><th>担当</th><th>期限の目安</th></tr></thead>
+        <tbody>
+          <tr><th>ハイクラス求人 7〜8件の獲得</th><td>島津氏</td><td>LP公開の前提条件</td></tr>
+          <tr><th>ヒーロー見出しの決定（案A / B / C）</th><td>島津氏・中丸</td><td>デザイン着手前</td></tr>
+          <tr><th>「70年」「年5,000社」「掲載企業数」の正確な数値</th><td>島津氏</td><td>02 の作成前</td></tr>
+          <tr><th>CASE 01 の掲載可否（本人・経営者の許可）</th><td>島津氏</td><td>06 の作成前</td></tr>
+          <tr><th>各求人のマスク粒度の最終判断</th><td>島津氏</td><td>求人獲得後</td></tr>
+          <tr><th>デザイン制作</th><td>橋本氏</td><td>構成確定後</td></tr>
+          <tr><th>図鑑内の導線実装・計測設定</th><td>未定</td><td>LP公開と同時</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-      <div data-dc-tpl="97" style="border-top: 1.5px dashed rgb(196, 196, 196); margin: 0px 44px;"></div>
-
-      
-      <section data-dc-tpl="98" style="padding: 34px 44px 40px;">
-        <div data-dc-tpl="99" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px;">
-          <span data-dc-tpl="100" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9;">04</span>
-          <div data-dc-tpl="101" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="102" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="103" style="background: rgb(240, 48, 32); color: rgb(255, 255, 255); border: 1.5px solid rgb(240, 48, 32); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">新規</span>
-              <span data-dc-tpl="104" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 9px; font-size: 11px; font-weight: 700;">前方配置</span>
-              <span data-dc-tpl="105" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47);">広島で働く、暮らす</span>
-            </div>
-            <div data-dc-tpl="106" style="display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: rgb(138, 138, 138);"><span data-dc-tpl="107" style="color: rgb(240, 48, 32); font-weight: 700; flex: 0 0 auto;">配置意図</span><span data-dc-tpl="108" style="line-height: 1.5;">差別化の核となる新設セクションのため、ページ前半（お悩みセクションの直後）に配置</span></div>
-          </div>
-        </div>
-        <table data-dc-tpl="109" style="width: 100%; border-collapse: collapse; font-size: 15px;">
-          <thead data-dc-tpl="110">
-            <tr data-dc-tpl="111">
-              <th data-dc-tpl="112" style="width: 150px; text-align: left; background: rgb(35, 65, 121); color: rgb(255, 255, 255); font-weight: 700; padding: 12px 16px; border: 1px solid rgb(35, 65, 121);">比較項目</th>
-              <th data-dc-tpl="113" style="text-align: left; background: rgb(35, 65, 121); color: rgb(255, 255, 255); font-weight: 700; padding: 12px 16px; border: 1px solid rgb(35, 65, 121);">東京圏</th>
-              <th data-dc-tpl="114" style="text-align: left; background: rgb(35, 65, 121); color: rgb(255, 255, 255); font-weight: 700; padding: 12px 16px; border: 1px solid rgb(35, 65, 121);">広島</th>
-            </tr>
-          </thead>
-          <tbody data-dc-tpl="115">
-            <tr data-dc-tpl="116">
-              <th data-dc-tpl="117" style="text-align: left; background: rgb(243, 245, 244); font-weight: 700; padding: 14px 16px; border: 1px solid rgb(196, 196, 196); color: rgb(51, 51, 51);">年収相場</th>
-              <td data-dc-tpl="118" style="padding: 14px 16px; border: 1px solid rgb(196, 196, 196); color: rgb(102, 102, 102);">業界・職種別の相場（比較データ枠）</td>
-              <td data-dc-tpl="119" style="padding: 14px 16px; border: 1px solid rgb(196, 196, 196); color: rgb(102, 102, 102);">業界・職種別の相場（比較データ枠）</td>
-            </tr>
-            <tr data-dc-tpl="120">
-              <th data-dc-tpl="121" style="text-align: left; background: rgb(243, 245, 244); font-weight: 700; padding: 14px 16px; border: 1px solid rgb(196, 196, 196); color: rgb(51, 51, 51);">生活費</th>
-              <td data-dc-tpl="122" colspan="2" style="padding: 14px 16px; border: 1px solid rgb(196, 196, 196); color: rgb(102, 102, 102);">家賃・物価 → 手取りの実質価値を可視化</td>
-            </tr>
-            <tr data-dc-tpl="123">
-              <th data-dc-tpl="124" style="text-align: left; background: rgb(243, 245, 244); font-weight: 700; padding: 14px 16px; border: 1px solid rgb(196, 196, 196); color: rgb(51, 51, 51);">暮らし<span data-dc-tpl="125" style="font-size: 11px; color: rgb(154, 154, 154); font-weight: 400;">（任意項目）</span></th>
-              <td data-dc-tpl="126" colspan="2" style="padding: 14px 16px; border: 1px solid rgb(196, 196, 196); color: rgb(102, 102, 102);">通勤時間・住環境の比較</td>
-            </tr>
-          </tbody>
-        </table>
-        <div data-dc-tpl="127" style="margin-top: 18px; border: 1.5px solid rgb(240, 48, 32); background: rgb(251, 238, 236); border-radius: 6px; padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start;">
-          <svg data-dc-tpl="128" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F03020" stroke-width="2" style="flex: 0 0 auto; margin-top: 1px;"><path data-dc-tpl="129" d="M12 9v4M12 17h.01"></path><path data-dc-tpl="130" d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
-          <div data-dc-tpl="131">
-            <div data-dc-tpl="132" style="font-size: 11px; font-weight: 700; color: rgb(240, 48, 32); margin-bottom: 4px;">制作上の注意（本番前に必読）</div>
-            <div data-dc-tpl="133" style="font-size: 14px; line-height: 1.7; color: rgb(51, 51, 51);">数値は未確定。厚生労働省の統計等から出典を明記のうえ引用する。「広島がおトク」という結論ありきの表現は避ける。</div>
-          </div>
-        </div>
-      </section>
-
-      <div data-dc-tpl="134" style="border-top: 1.5px dashed rgb(196, 196, 196); margin: 0px 44px;"></div>
-
-      
-      <section data-dc-tpl="135" style="padding: 34px 44px 40px; background: rgb(250, 250, 248);">
-        <div data-dc-tpl="136" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 24px;">
-          <span data-dc-tpl="137" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9;">05</span>
-          <div data-dc-tpl="138" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="139" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="140" style="background: rgb(228, 228, 228); color: rgb(85, 85, 85); border: 1px solid rgb(196, 196, 196); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">維持</span>
-              <span data-dc-tpl="141" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 9px; font-size: 11px; font-weight: 700;">＋一文追加</span>
-              <span data-dc-tpl="142" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47);">3つの当社の強み</span>
-            </div>
-          </div>
-        </div>
-        <div data-dc-tpl="143" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-          <div data-dc-tpl="144" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;">
-            <div data-dc-tpl="145" style="aspect-ratio: 16 / 9; border-bottom: 1px solid rgb(196, 196, 196); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242);"></div>
-            <div data-dc-tpl="146" style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 12px;">
-              <div data-dc-tpl="147" style="font-size: 16px; font-weight: 700; line-height: 1.5;">経営者の人柄・社風に精通</div>
-              <div data-dc-tpl="148" style="border-left: 4px solid rgb(240, 48, 32); background: rgb(251, 238, 236); padding: 9px 12px; border-radius: 0px 5px 5px 0px; font-size: 13px; line-height: 1.6; color: rgb(51, 51, 51);"><span data-dc-tpl="149" style="color: rgb(240, 48, 32); font-weight: 700;">追記 </span>遠方でもオンラインで情報提供可能</div>
-            </div>
-          </div>
-          <div data-dc-tpl="150" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;">
-            <div data-dc-tpl="151" style="aspect-ratio: 16 / 9; border-bottom: 1px solid rgb(196, 196, 196); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242);"></div>
-            <div data-dc-tpl="152" style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 12px;">
-              <div data-dc-tpl="153" style="font-size: 16px; font-weight: 700; line-height: 1.5;">専任担当者の一気通貫サポート</div>
-              <div data-dc-tpl="154" style="border-left: 4px solid rgb(240, 48, 32); background: rgb(251, 238, 236); padding: 9px 12px; border-radius: 0px 5px 5px 0px; font-size: 13px; line-height: 1.6; color: rgb(51, 51, 51);"><span data-dc-tpl="155" style="color: rgb(240, 48, 32); font-weight: 700;">追記 </span>面談〜条件交渉までオンライン完結</div>
-            </div>
-          </div>
-          <div data-dc-tpl="156" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;">
-            <div data-dc-tpl="157" style="aspect-ratio: 16 / 9; border-bottom: 1px solid rgb(196, 196, 196); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242);"></div>
-            <div data-dc-tpl="158" style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 12px;">
-              <div data-dc-tpl="159" style="font-size: 16px; font-weight: 700; line-height: 1.5;">「良い所」をブラッシュアップ</div>
-              <div data-dc-tpl="160" style="background: rgb(237, 237, 237); color: rgb(119, 119, 119); padding: 9px 12px; border-radius: 5px; font-size: 13px; line-height: 1.6;">変更なし</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div data-dc-tpl="161" style="border-top: 1.5px dashed rgb(196, 196, 196); margin: 0px 44px;"></div>
-
-      
-      <section data-dc-tpl="162" style="padding: 34px 44px 40px;">
-        <div data-dc-tpl="163" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 30px;">
-          <span data-dc-tpl="164" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9;">06</span>
-          <div data-dc-tpl="165" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="166" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="167" style="background: rgb(228, 228, 228); color: rgb(85, 85, 85); border: 1px solid rgb(196, 196, 196); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">維持</span>
-              <span data-dc-tpl="168" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 9px; font-size: 11px; font-weight: 700;">＋一文追加</span>
-              <span data-dc-tpl="169" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47);">ご利用の流れ</span>
-            </div>
-          </div>
-        </div>
-        <div data-dc-tpl="170" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0px; align-items: start; position: relative;">
-          <div data-dc-tpl="171" style="position: absolute; top: 26px; left: 10%; right: 10%; height: 2px; background: rgb(208, 208, 208); z-index: 0;"></div>
-          <div data-dc-tpl="172" style="display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 1;">
-            <div data-dc-tpl="173" style="width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgb(176, 176, 176); background: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: rgb(102, 102, 102);">1</div>
-            <div data-dc-tpl="174" style="font-size: 14px; font-weight: 700; text-align: center;">お申込み</div>
-          </div>
-          <div data-dc-tpl="175" style="display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 1;">
-            <div data-dc-tpl="176" style="width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgb(240, 48, 32); background: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: rgb(240, 48, 32);">2</div>
-            <div data-dc-tpl="177" style="font-size: 14px; font-weight: 700; text-align: center;">担当者連絡</div>
-            <div data-dc-tpl="178" style="position: relative; background: rgb(240, 48, 32); color: rgb(255, 255, 255); font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 6px; line-height: 1.4; text-align: center; max-width: 130px;">オンライン配慮
-              <span data-dc-tpl="179" style="position: absolute; top: -5px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 9px; height: 9px; background: rgb(240, 48, 32);"></span>
-            </div>
-          </div>
-          <div data-dc-tpl="180" style="display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 1;">
-            <div data-dc-tpl="181" style="width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgb(176, 176, 176); background: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: rgb(102, 102, 102);">3</div>
-            <div data-dc-tpl="182" style="font-size: 14px; font-weight: 700; text-align: center;">求人情報提供</div>
-          </div>
-          <div data-dc-tpl="183" style="display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 1;">
-            <div data-dc-tpl="184" style="width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgb(176, 176, 176); background: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: rgb(102, 102, 102);">4</div>
-            <div data-dc-tpl="185" style="font-size: 14px; font-weight: 700; text-align: center;">企業へ推薦</div>
-          </div>
-          <div data-dc-tpl="186" style="display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 1;">
-            <div data-dc-tpl="187" style="width: 54px; height: 54px; border-radius: 50%; border: 2px solid rgb(176, 176, 176); background: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: rgb(102, 102, 102);">5</div>
-            <div data-dc-tpl="188" style="font-size: 14px; font-weight: 700; text-align: center;">面接・入社</div>
-          </div>
-        </div>
-      </section>
-
-      <div data-dc-tpl="189" style="border-top: 1.5px dashed rgb(196, 196, 196); margin: 0px 44px;"></div>
-
-      
-      <section data-dc-tpl="190" style="padding: 34px 44px 40px; background: rgb(250, 250, 248);">
-        <div data-dc-tpl="191" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 24px;">
-          <span data-dc-tpl="192" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9;">07</span>
-          <div data-dc-tpl="193" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="194" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="195" style="background: rgb(240, 48, 32); color: rgb(255, 255, 255); border: 1.5px solid rgb(240, 48, 32); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">新規</span>
-              <span data-dc-tpl="196" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47);">広島で働く先輩たちの声</span>
-            </div>
-            <div data-dc-tpl="197" style="display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: rgb(138, 138, 138);"><span data-dc-tpl="198" style="color: rgb(240, 48, 32); font-weight: 700; flex: 0 0 auto;">運用注記</span><span data-dc-tpl="199" style="line-height: 1.5;">記事が揃うまでは非表示、または「Coming Soon」表示</span></div>
-          </div>
-        </div>
-        <div data-dc-tpl="200" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-          <div data-dc-tpl="201" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
-            <div data-dc-tpl="202" style="position: absolute; top: 10px; right: 10px; background: rgb(237, 237, 237); color: rgb(136, 136, 136); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px;">Coming Soon</div>
-            <div data-dc-tpl="203" style="aspect-ratio: 16 / 9; border-bottom: 1px solid rgb(196, 196, 196); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242);"></div>
-            <div data-dc-tpl="204" style="padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px;">
-              <div data-dc-tpl="205" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 80%;"></div>
-              <div data-dc-tpl="206" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 60%;"></div>
-              <div data-dc-tpl="207" style="font-size: 11px; color: rgb(154, 154, 154); margin-top: 4px;">記事へのリンクカード</div>
-            </div>
-          </div>
-          <div data-dc-tpl="208" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
-            <div data-dc-tpl="209" style="position: absolute; top: 10px; right: 10px; background: rgb(237, 237, 237); color: rgb(136, 136, 136); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px;">Coming Soon</div>
-            <div data-dc-tpl="210" style="aspect-ratio: 16 / 9; border-bottom: 1px solid rgb(196, 196, 196); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242);"></div>
-            <div data-dc-tpl="211" style="padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px;">
-              <div data-dc-tpl="212" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 80%;"></div>
-              <div data-dc-tpl="213" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 60%;"></div>
-              <div data-dc-tpl="214" style="font-size: 11px; color: rgb(154, 154, 154); margin-top: 4px;">記事へのリンクカード</div>
-            </div>
-          </div>
-          <div data-dc-tpl="215" style="background: rgb(255, 255, 255); border: 1px solid rgb(196, 196, 196); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
-            <div data-dc-tpl="216" style="position: absolute; top: 10px; right: 10px; background: rgb(237, 237, 237); color: rgb(136, 136, 136); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px;">Coming Soon</div>
-            <div data-dc-tpl="217" style="aspect-ratio: 16 / 9; border-bottom: 1px solid rgb(196, 196, 196); background: linear-gradient(to right top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)), linear-gradient(to left top, transparent calc(50% - 0.6px), rgb(208, 208, 208) calc(50% - 0.6px), rgb(208, 208, 208) calc(50% + 0.6px), transparent calc(50% + 0.6px)) rgb(244, 244, 242);"></div>
-            <div data-dc-tpl="218" style="padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px;">
-              <div data-dc-tpl="219" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 80%;"></div>
-              <div data-dc-tpl="220" style="height: 11px; border-radius: 3px; background: rgb(237, 237, 237); width: 60%;"></div>
-              <div data-dc-tpl="221" style="font-size: 11px; color: rgb(154, 154, 154); margin-top: 4px;">記事へのリンクカード</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div data-dc-tpl="222" style="border-top: 1.5px dashed rgb(196, 196, 196); margin: 0px 44px;"></div>
-
-      
-      <section data-dc-tpl="223" style="padding: 34px 44px 48px;">
-        <div data-dc-tpl="224" style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 26px;">
-          <span data-dc-tpl="225" style="font-size: 34px; font-weight: 900; color: rgb(230, 230, 228); line-height: 0.9;">08</span>
-          <div data-dc-tpl="226" style="display: flex; flex-direction: column; gap: 6px;">
-            <div data-dc-tpl="227" style="display: flex; align-items: center; gap: 10px;">
-              <span data-dc-tpl="228" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1.5px solid rgb(240, 48, 32); border-radius: 4px; padding: 3px 12px; font-size: 12px; font-weight: 700;">改訂</span>
-              <span data-dc-tpl="229" style="background: rgb(255, 255, 255); color: rgb(240, 48, 32); border: 1px solid rgb(240, 48, 32); border-radius: 4px; padding: 2px 9px; font-size: 11px; font-weight: 700;">設問追加</span>
-              <span data-dc-tpl="230" style="font-size: 15px; font-weight: 700; color: rgb(47, 47, 47);">申込フォーム</span>
-            </div>
-            <div data-dc-tpl="231" style="display: flex; align-items: baseline; gap: 7px; font-size: 12.5px; color: rgb(138, 138, 138);"><span data-dc-tpl="232" style="color: rgb(240, 48, 32); font-weight: 700; flex: 0 0 auto;">注記</span><span data-dc-tpl="233" style="line-height: 1.5;">既存項目は維持。追加2項目を色・枠で区別して強調</span></div>
-          </div>
-        </div>
-        <div data-dc-tpl="234" style="max-width: 640px; margin: 0px auto; display: flex; flex-direction: column; gap: 16px;">
-          
-          <div data-dc-tpl="235" style="display: flex; flex-direction: column; gap: 6px;">
-            <label data-dc-tpl="236" style="font-size: 13px; font-weight: 700; color: rgb(85, 85, 85);">転職希望時期</label>
-            <div data-dc-tpl="237" style="height: 44px; border: 1px solid rgb(176, 176, 176); border-radius: 6px; background: rgb(255, 255, 255); display: flex; align-items: center; padding: 0px 14px; color: rgb(176, 176, 176); font-size: 14px;">選択</div>
-          </div>
-          <div data-dc-tpl="238" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div data-dc-tpl="239" style="display: flex; flex-direction: column; gap: 6px;">
-              <label data-dc-tpl="240" style="font-size: 13px; font-weight: 700; color: rgb(85, 85, 85);">直近所属会社の業種</label>
-              <div data-dc-tpl="241" style="height: 44px; border: 1px solid rgb(176, 176, 176); border-radius: 6px; background: rgb(255, 255, 255); display: flex; align-items: center; padding: 0px 14px; color: rgb(176, 176, 176); font-size: 14px;">選択</div>
-            </div>
-            <div data-dc-tpl="242" style="display: flex; flex-direction: column; gap: 6px;">
-              <label data-dc-tpl="243" style="font-size: 13px; font-weight: 700; color: rgb(85, 85, 85);">直近で希望する業種</label>
-              <div data-dc-tpl="244" style="height: 44px; border: 1px solid rgb(176, 176, 176); border-radius: 6px; background: rgb(255, 255, 255); display: flex; align-items: center; padding: 0px 14px; color: rgb(176, 176, 176); font-size: 14px;">選択</div>
-            </div>
-          </div>
-          <div data-dc-tpl="245" style="display: flex; flex-direction: column; gap: 6px;">
-            <label data-dc-tpl="246" style="font-size: 13px; font-weight: 700; color: rgb(85, 85, 85);">お名前</label>
-            <div data-dc-tpl="247" style="height: 44px; border: 1px solid rgb(176, 176, 176); border-radius: 6px; background: rgb(255, 255, 255);"></div>
-          </div>
-          <div data-dc-tpl="248" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div data-dc-tpl="249" style="display: flex; flex-direction: column; gap: 6px;">
-              <label data-dc-tpl="250" style="font-size: 13px; font-weight: 700; color: rgb(85, 85, 85);">電話番号</label>
-              <div data-dc-tpl="251" style="height: 44px; border: 1px solid rgb(176, 176, 176); border-radius: 6px; background: rgb(255, 255, 255);"></div>
-            </div>
-            <div data-dc-tpl="252" style="display: flex; flex-direction: column; gap: 6px;">
-              <label data-dc-tpl="253" style="font-size: 13px; font-weight: 700; color: rgb(85, 85, 85);">メールアドレス</label>
-              <div data-dc-tpl="254" style="height: 44px; border: 1px solid rgb(176, 176, 176); border-radius: 6px; background: rgb(255, 255, 255);"></div>
-            </div>
-          </div>
-          <div data-dc-tpl="255" style="display: flex; flex-direction: column; gap: 6px;">
-            <label data-dc-tpl="256" style="font-size: 13px; font-weight: 700; color: rgb(85, 85, 85);">その他ご要望</label>
-            <div data-dc-tpl="257" style="height: 78px; border: 1px solid rgb(176, 176, 176); border-radius: 6px; background: rgb(255, 255, 255);"></div>
-          </div>
-
-          
-          <div data-dc-tpl="258" style="border: 1.5px solid rgb(240, 48, 32); background: rgb(251, 238, 236); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 16px; margin-top: 6px;">
-            <div data-dc-tpl="259" style="display: flex; align-items: center; gap: 8px;">
-              <span data-dc-tpl="260" style="background: rgb(240, 48, 32); color: rgb(255, 255, 255); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px;">追加項目</span>
-              <span data-dc-tpl="261" style="font-size: 12px; color: rgb(240, 48, 32); font-weight: 700;">既存項目と区別して強調表示</span>
-            </div>
-            <div data-dc-tpl="262" style="display: flex; flex-direction: column; gap: 8px;">
-              <label data-dc-tpl="263" style="font-size: 13px; font-weight: 700; color: rgb(51, 51, 51);">現在お住まいの地域</label>
-              <div data-dc-tpl="264" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <span data-dc-tpl="265" style="border: 1px solid rgb(240, 48, 32); background: rgb(255, 255, 255); color: rgb(51, 51, 51); border-radius: 20px; padding: 8px 18px; font-size: 14px;">東京圏</span>
-                <span data-dc-tpl="266" style="border: 1px solid rgb(240, 48, 32); background: rgb(255, 255, 255); color: rgb(51, 51, 51); border-radius: 20px; padding: 8px 18px; font-size: 14px;">広島県内</span>
-                <span data-dc-tpl="267" style="border: 1px solid rgb(240, 48, 32); background: rgb(255, 255, 255); color: rgb(51, 51, 51); border-radius: 20px; padding: 8px 18px; font-size: 14px;">その他</span>
-              </div>
-            </div>
-            <div data-dc-tpl="268" style="display: flex; flex-direction: column; gap: 8px;">
-              <label data-dc-tpl="269" style="font-size: 13px; font-weight: 700; color: rgb(51, 51, 51);">面談方法のご希望</label>
-              <div data-dc-tpl="270" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <span data-dc-tpl="271" style="border: 1px solid rgb(240, 48, 32); background: rgb(255, 255, 255); color: rgb(51, 51, 51); border-radius: 20px; padding: 8px 18px; font-size: 14px;">オンライン</span>
-                <span data-dc-tpl="272" style="border: 1px solid rgb(240, 48, 32); background: rgb(255, 255, 255); color: rgb(51, 51, 51); border-radius: 20px; padding: 8px 18px; font-size: 14px;">広島訪問時に対面</span>
-                <span data-dc-tpl="273" style="border: 1px solid rgb(240, 48, 32); background: rgb(255, 255, 255); color: rgb(51, 51, 51); border-radius: 20px; padding: 8px 18px; font-size: 14px;">どちらでも</span>
-              </div>
-            </div>
-          </div>
-
-          <div data-dc-tpl="274" style="align-self: center; background: rgb(240, 48, 32); color: rgb(255, 255, 255); padding: 15px 56px; border-radius: 6px; font-size: 16px; font-weight: 700; margin-top: 10px;">送信する</div>
-        </div>
-      </section>
-
-    </div>
   </div>
 
-  <div data-dc-tpl="275" style="font-size: 12px; color: rgb(136, 136, 136); max-width: 1180px; text-align: center; line-height: 1.6;">ひろしま企業図鑑　転職支援サービス　改訂版LPワイヤーフレーム　/　Copyright(c) phonogram, Inc. All Rights Reserved.</div></div></div></div>
+  <div class="w foot">
+    ひろしま企業図鑑　ハイクラス転職支援LP 構成案（2026年7月28日 方針変更版）　/　Copyright(c) phonogram, Inc. All Rights Reserved.
+  </div>
 
-
-</body></html>
+</div>
+</body>
+</html>
