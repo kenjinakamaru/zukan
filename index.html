@@ -70,11 +70,12 @@
 
   /* ヒーロー */
   .hero{display:grid;grid-template-columns:1fr .92fr;gap:34px;align-items:center}
-  .h-opts{display:flex;flex-direction:column;gap:12px}
-  .h-opt{border:1px solid #c4c4c4;border-radius:8px;padding:16px 18px;background:#fff;position:relative}
-  .h-opt.pick{border:2px solid #F03020;background:#fffdfc}
-  .h-opt-k{position:absolute;top:-9px;left:14px;background:#F03020;color:#fff;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.06em}
-  .h-copy{font-size:26px;font-weight:900;line-height:1.35;letter-spacing:.01em}
+  .h-final{position:relative;border:2px solid #F03020;border-radius:8px;background:#fffdfc;padding:26px 24px 24px}
+  .h-final-k{position:absolute;top:-10px;left:16px;background:#F03020;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;letter-spacing:.08em}
+  .h-headline{font-size:38px;font-weight:900;line-height:1.3;letter-spacing:.01em}
+  .h-dropped{margin-top:12px;border-left:3px solid #d0d0d0;padding:2px 0 2px 12px}
+  .h-dropped-t{font-size:11px;font-weight:700;color:#9a9a9a;letter-spacing:.06em;margin-bottom:3px}
+  .h-dropped-l{font-size:12px;line-height:1.7;color:#9a9a9a}
   .h-sub{font-size:15px;line-height:1.8;color:#555;margin-top:16px}
   .cta{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:#F03020;color:#fff;padding:15px 30px;border-radius:6px;font-size:16px;font-weight:700}
   .cta-note{font-size:11.5px;color:#8a8a8a;margin-top:8px}
@@ -187,7 +188,7 @@
   <div class="w head">
     <div style="display:flex;flex-direction:column;gap:6px">
       <div class="tag">WIREFRAME / DRAFT</div>
-      <div class="head-sub">ハイクラス転職支援LP 構成案 ／ 2026年7月28日 方針変更版（前版：転職支援サービスLP 再設計案）</div>
+      <div class="head-sub">ハイクラス転職支援LP 構成案 ／ 2026年7月28日 方針変更版（7月29日 ヒーロー見出し確定）</div>
     </div>
     <div class="legend">
       <div class="legend-t">変更ステータス 凡例</div>
@@ -235,7 +236,7 @@
         <span class="num">01</span>
         <div class="sec-meta">
           <div class="sec-line">
-            <span class="pill pill-rev">改訂</span><span class="pill-sm">全面差替</span>
+            <span class="pill pill-rev">改訂</span><span class="pill-sm">全面差替</span><span class="pill-sm">見出し確定（7/29）</span>
             <span class="sec-name">ヒーロー</span>
           </div>
           <div class="why"><b>変更理由</b><span>「広島で、はたらこ。」は対象が広すぎる。求人票になる前のポジションを持っていることを最初の3秒で言い切る</span></div>
@@ -243,19 +244,13 @@
       </div>
       <div class="hero">
         <div>
-          <div class="h-opts">
-            <div class="h-opt pick">
-              <span class="h-opt-k">案A</span>
-              <div class="h-copy">その求人は、<br>まだ求人票になっていない。</div>
-            </div>
-            <div class="h-opt">
-              <span class="h-opt-k">案B</span>
-              <div class="h-copy" style="font-size:21px">広島の経営者が、次の戦略のために<br>探している人がいます。</div>
-            </div>
-            <div class="h-opt">
-              <span class="h-opt-k">案C</span>
-              <div class="h-copy" style="font-size:21px">中期経営計画には書かれている。<br>求人サイトには、まだ出ていない。</div>
-            </div>
+          <div class="h-final">
+            <span class="h-final-k">確定コピー</span>
+            <div class="h-headline">その求人は、<br>まだ求人票になっていない。</div>
+          </div>
+          <div class="h-dropped">
+            <div class="h-dropped-t">検討した他案（不採用・記録として残す）</div>
+            <div class="h-dropped-l">案B「広島の経営者が、次の戦略のために探している人がいます。」／案C「中期経営計画には書かれている。求人サイトには、まだ出ていない。」</div>
           </div>
           <div class="h-sub">
             ひろしま企業図鑑は、広島の経営者に直接取材し、これから何をやろうとしているのかを聞いています。その中には「この戦略を任せられる人が社内にいない」という話が必ず出てきます。私たちは、それが求人になる前に知っています。
@@ -773,7 +768,6 @@
         <thead><tr><th>項目</th><th>担当</th><th>期限の目安</th></tr></thead>
         <tbody>
           <tr><th>ハイクラス求人 7〜8件の獲得</th><td>島津氏</td><td>LP公開の前提条件</td></tr>
-          <tr><th>ヒーロー見出しの決定（案A / B / C）</th><td>島津氏・中丸</td><td>デザイン着手前</td></tr>
           <tr><th>「70年」「年5,000社」「掲載企業数」の正確な数値</th><td>島津氏</td><td>02 の作成前</td></tr>
           <tr><th>CASE 01 の掲載可否（本人・経営者の許可）</th><td>島津氏</td><td>06 の作成前</td></tr>
           <tr><th>各求人のマスク粒度の最終判断</th><td>島津氏</td><td>求人獲得後</td></tr>
